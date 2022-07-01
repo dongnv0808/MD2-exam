@@ -80,32 +80,64 @@ export class MenuManagement{
     }
 
     inputProduct(){
-        let nameProduct = rl.question('Nhap ten: ');
-        // console.log('--Chon loai hang hoa--');
-        // console.log('1. Rau');
-        // console.log('2. Thit');
-        // console.log('3. Ca');
-        // let choice = -1;
-        // switch(choice){
-        //     case 1: {
-        //         let type = 'Thit';
-        //         break;
-        //     }
-        //     case 2: {
-        //         let type = 'Ca';
-        //         break;
-        //     }
-        //     case 3: {
-        //         let type = 'Rau';
-        //         break;
-        //     }
-        // }
-        let type = rl.question('Nhap loai hang hoa:')
+        let nameRegex: RegExp = /^[a-zA-Z0-9]([._](?![._])|[a-zA-Z0-9]){6,18}[a-zA-Z0-9]$/;
+        let nameProduct = this.inputNameProduct(nameRegex);
+        // let type = rl.question('Nhap loai hang hoa:')
+        let type = this.inputType();
         let price = +rl.question('Nhap gia: ');
         let amount = +rl.question('Nhap so luong: ');
         let dateCreated = rl.question('Nhap ngay tao: ');
         let describe = rl.question('Nhap mo ta: ');
         return new Product(nameProduct, type, price, amount, dateCreated, describe);
+    }
+
+    inputNameProduct(nameRegex: RegExp): string{
+        let nameProduct = '';
+        let isValidName = true;
+        do{
+            nameProduct = rl.question('Nhap ten hang hoa it nhat 8 ky tu');
+            let currentName = this.productMenu.findByName(nameProduct);
+            if(currentName){
+                console.log('\nHang hoa da ton tai!\n');
+                isValidName = false;
+            }else if(nameProduct == ''){
+                console.log('\nKhong duoc de trong!\n')
+                isValidName = false;
+            }else if(!nameRegex.test(nameProduct)){
+                console.log('\nTen hang hoa it nhat 8 ky tu!\n');
+                isValidName = false;
+            }else{
+                isValidName = true;
+            }
+        }while(!isValidName)
+        return nameProduct;
+    }
+
+    inputType(): string{
+        let type = '';
+        let isValidChoice = true;
+        let choice = -1;
+        do{
+            console.log('--Nhap loai hang hoa--');
+            console.log('1. Thit');
+            console.log('2. Ca');
+            console.log('3. Rau');
+            choice = +rl.question('Nhap lua chon cua ban');
+            if(choice == 1){
+                type = 'Thit';
+                isValidChoice = true;
+            }else if(choice == 2){
+                type = 'Ca';
+                isValidChoice = true;
+            }else if(choice == 3){
+                type = 'Rau';
+                isValidChoice = true;
+            }else{
+                console.log('\nNhap 1, 2 hoac 3!\n');
+                isValidChoice = false;
+            }  
+        }while(!isValidChoice)
+        return type;
     }
 
     creteNewProduct(){
