@@ -107,8 +107,8 @@ class MenuManagement {
         let nameProduct = this.inputNameProduct(nameRegex);
         // let type = rl.question('Nhap loai hang hoa:')
         let type = this.inputType();
-        let price = +rl.question('Nhap gia: ');
-        let amount = +rl.question('Nhap so luong: ');
+        let price = this.inputPrice();
+        let amount = this.inputAmount();
         let dateCreated = rl.question('Nhap ngay tao: ');
         let describe = rl.question('Nhap mo ta: ');
         return new product_1.Product(nameProduct, type, price, amount, dateCreated, describe);
@@ -117,7 +117,7 @@ class MenuManagement {
         let nameProduct = '';
         let isValidName = true;
         do {
-            nameProduct = rl.question('Nhap ten hang hoa it nhat 8 ky tu');
+            nameProduct = rl.question('Nhap ten hang hoa it nhat 8 ky tu: ');
             let currentName = this.productMenu.findByName(nameProduct);
             if (currentName) {
                 console.log('\nHang hoa da ton tai!\n');
@@ -165,6 +165,38 @@ class MenuManagement {
             }
         } while (!isValidChoice);
         return type;
+    }
+    inputPrice() {
+        let price = 0;
+        let isValidPrice = true;
+        do {
+            console.log('\n--Nhap gia hang hoa--\n');
+            price = +rl.question('Nhap gia: ');
+            if (price >= 0) {
+                isValidPrice = true;
+            }
+            else {
+                console.log('\nGia hang hoa phai la 1 so nguyen duong!\n');
+                isValidPrice = false;
+            }
+        } while (!isValidPrice);
+        return price;
+    }
+    inputAmount() {
+        let amount = 0;
+        let isValidPrice = true;
+        do {
+            console.log('\n--Nhap so luong hang hoa--\n');
+            amount = +rl.question('Nhap so luong: ');
+            if (amount >= 0) {
+                isValidPrice = true;
+            }
+            else {
+                console.log('\nSo luong hang hoa phai la 1 so nguyen duong!\n');
+                isValidPrice = false;
+            }
+        } while (!isValidPrice);
+        return amount;
     }
     creteNewProduct() {
         let product = this.inputProduct();
