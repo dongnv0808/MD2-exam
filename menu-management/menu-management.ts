@@ -80,14 +80,15 @@ export class MenuManagement{
     }
 
     inputProduct(){
-        let nameRegex: RegExp = /^[a-zA-Z0-9]([._](?![._])|[a-zA-Z0-9]){6,18}[a-zA-Z0-9]$/;
+        let nameRegex: RegExp = /^[a-zA-Z0-9]{6,}$/;
         let nameProduct = this.inputNameProduct(nameRegex);
-        // let type = rl.question('Nhap loai hang hoa:')
         let type = this.inputType();
-        let price = this.inputPrice();
-        let amount = this.inputAmount();
-        let dateCreated = rl.question('Nhap ngay tao: ');
-        let describe = rl.question('Nhap mo ta: ');
+        let numberRegex: RegExp = /^[1-9]\d{0,}$/;
+        let price = this.inputPrice(numberRegex);
+        let amount = this.inputAmount(numberRegex);
+        let dateCreated = new Date();
+        let describeRegex: RegExp = /^[a-zA-Z0-9]{20,}$/;
+        let describe = this.inputDescribe(describeRegex);
         return new Product(nameProduct, type, price, amount, dateCreated, describe);
     }
 
@@ -95,7 +96,7 @@ export class MenuManagement{
         let nameProduct = '';
         let isValidName = true;
         do{
-            nameProduct = rl.question('Nhap ten hang hoa it nhat 8 ky tu: ');
+            nameProduct = rl.question('Nhap ten hang hoa nhieu nhat 8 ky tu: ');
             let currentName = this.productMenu.findByName(nameProduct);
             if(currentName){
                 console.log('\nHang hoa da ton tai!\n');
@@ -104,7 +105,7 @@ export class MenuManagement{
                 console.log('\nKhong duoc de trong!\n')
                 isValidName = false;
             }else if(!nameRegex.test(nameProduct)){
-                console.log('\nTen hang hoa it nhat 8 ky tu!\n');
+                console.log('\nTen hang hoa it nhat 6 ky tu!\n');
                 isValidName = false;
             }else{
                 isValidName = true;
@@ -140,36 +141,65 @@ export class MenuManagement{
         return type;
     }
 
-    inputPrice(): number{
-        let price = 0;
+    inputPrice(numberRegex: RegExp): number{
+        let price = '';
+        let currentPrice = 0;
         let isValidPrice = true;
         do{
             console.log('\n--Nhap gia hang hoa--\n');
-            price = +rl.question('Nhap gia: ');
-            if(price >= 0){
-                isValidPrice = true;
-            }else{
-                console.log('\nGia hang hoa phai la 1 so nguyen duong!\n');
+            price = rl.question('Nhap gia: ');
+            if(price == ''){
+                console.log('\nKhong duoc de trong\n');
                 isValidPrice = false;
+            }else if(!numberRegex.test(price)){
+                console.log('\nGia phai la 1 so nguyen duong\n');
+                isValidPrice = false;
+            }else{
+                currentPrice = +price;
+                isValidPrice = true;
             }
         }while(!isValidPrice)
-        return price;
+        return currentPrice;
     }
 
-    inputAmount(): number{
-        let amount = 0;
+    inputAmount(numberRegex: RegExp): number{
+        let amount = '';
+        let currentAmount = 0;
         let isValidPrice = true;
         do{
             console.log('\n--Nhap so luong hang hoa--\n');
-            amount = +rl.question('Nhap so luong: ');
-            if(amount >= 0){
-                isValidPrice = true;
-            }else{
-                console.log('\nSo luong hang hoa phai la 1 so nguyen duong!\n');
+            amount = rl.question('Nhap so luong: ');
+            if(amount == ''){
+                console.log('\nKhong duoc de trong so luong hang hoa!\n');
                 isValidPrice = false;
+            }else if(!numberRegex.test(amount)){
+                console.log('\nSo luong phai hang hoa phai la mot so nguyen duong\n');
+                isValidPrice = false;
+            }else{
+                currentAmount = +amount;
+                isValidPrice = true;
             }
         }while(!isValidPrice)
-        return amount;
+        return currentAmount;
+    }
+
+    inputDescribe(describeRegex: RegExp): string{
+        let describe = '';
+        let isValidDescribe = true;
+        do{
+            console.log('\n--Nhap mo ta san pham\n')
+            describe = rl.question('Nhap mo ta san pham: ');
+            if(describe == ''){
+                console.log('\nKhong duoc de trong mo ta!\n');
+                isValidDescribe = false;
+            }else if(!describeRegex.test(describe)){
+                console.log('\nNhap it nhat 20 ky tu!\n');
+                isValidDescribe = false;
+            }else{
+                isValidDescribe = true;
+            }
+        }while(!isValidDescribe)
+        return describe;
     }
 
     creteNewProduct(){

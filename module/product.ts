@@ -4,10 +4,10 @@ export class Product{
     private type: string;
     private price: number;
     private amount: number;
-    private dateCreated: string;
+    private dateCreated: Date;
     private describe: string;
 
-	constructor($nameProduct: string, $type: string, $price: number, $amount: number, $dateCreated: string, $describe: string) {
+	constructor($nameProduct: string, $type: string, $price: number, $amount: number, $dateCreated: Date, $describe: string) {
 		this.nameProduct = $nameProduct;
 		this.type = $type;
 		this.price = $price;
@@ -32,7 +32,7 @@ export class Product{
 	public get $amount(): number {
 		return this.amount;
 	}
-	public get $dateCreated(): string {
+	public get $dateCreated(): Date {
 		return this.dateCreated;
 	}
 	public get $describe(): string {
@@ -53,7 +53,7 @@ export class Product{
 	public set $amount(value: number) {
 		this.amount = value;
 	}
-	public set $dateCreated(value: string) {
+	public set $dateCreated(value: Date) {
 		this.dateCreated = value;
 	}
 	public set $describe(value: string) {
